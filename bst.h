@@ -489,10 +489,11 @@ void BinarySearchTree<Key, Value>::insert(const std::pair<const Key, Value> &key
     // TODO
     Node<Key, Value>* parent = NULL;
     Node<Key, Value>* temp = root_;
-
+    //traverses tree until reaching a NULL node
     while(temp!= NULL)
     {
         parent = temp;
+        //check if key exists
         if(keyValuePair.first == temp->getKey())
         {
             temp->setValue(keyValuePair.second);
@@ -516,9 +517,11 @@ void BinarySearchTree<Key, Value>::insert(const std::pair<const Key, Value> &key
     }
     else if(keyValuePair.first < parent->getKey())
     {
+        //if new key is less set as left child
         parent->setLeft(newNode);
     }
     else{
+        //if the new key is greater set as right child
         parent->setRight(newNode);
     }
 
@@ -533,11 +536,13 @@ void BinarySearchTree<Key, Value>::insert(const std::pair<const Key, Value> &key
 template<typename Key, typename Value>
 void BinarySearchTree<Key, Value>::remove(const Key& key)
 {
+    //find node to delete
     Node<Key, Value>* deleted = internalFind(key);
     if(deleted == NULL)
     {
         return;
     }
+    //check if nodes have a left and right child
     if(deleted->getLeft() != NULL && deleted->getRight() != NULL)
     {
         Node<Key, Value>* predecessor = deleted->getLeft();
@@ -545,9 +550,11 @@ void BinarySearchTree<Key, Value>::remove(const Key& key)
         {
             predecessor = predecessor->getRight();
         }
+        //swap content of deleted node
         nodeSwap(deleted, predecessor);
     }
 
+    //find the child of the deleted node
     Node<Key, Value>* child = (deleted->getLeft() != NULL) ? deleted->getLeft() : deleted->getRight();
 
     if (deleted->getParent() == NULL)
@@ -556,6 +563,7 @@ void BinarySearchTree<Key, Value>::remove(const Key& key)
     }
     else
     {
+        //set the child of the apporpriated node as deleted node
         if(deleted->getParent()->getLeft() == deleted)
         {
             deleted->getParent()->setLeft(child);
